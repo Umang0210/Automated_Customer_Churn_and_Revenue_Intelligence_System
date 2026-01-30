@@ -48,5 +48,3 @@ jobs:
           print("Rows:", df.shape[0])
           print("Columns:", df.shape[1])
           EOF
-
-          
