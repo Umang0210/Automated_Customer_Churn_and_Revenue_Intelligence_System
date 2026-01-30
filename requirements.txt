@@ -1,3 +1,6 @@
-pandas>=1.5
-numpy>=1.23
+pandas
+numpy
 scikit-learn
+joblib
+fastapi
+uvicorn

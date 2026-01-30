@@ -6,3 +6,6 @@ data/raw/*real*.csv
 
 # Keep sample dataset tracked
 !data/raw/Sample_dataset.csv
+
+# Model artifacts
+models/
