@@ -1,0 +1,8 @@
+# Ignore real dataset
+data/raw/WA_Fn-UseC_-Telco-Customer-Churn.csv
+
+# Ignore any future real datasets
+data/raw/*real*.csv
+
+# Keep sample dataset tracked
+!data/raw/Sample_dataset.csv
