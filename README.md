@@ -1,157 +1,141 @@
-📊 Intelligent Customer Churn & Revenue Optimization Platform
-Overview
+# 📊 Customer Churn & Revenue Optimization Intelligence System  
+**End-to-End Data Science + Machine Learning + DevOps Project**
 
-This project implements a production-grade, end-to-end data science and machine learning platform that analyzes historical customer data to predict churn risk, quantify revenue impact, and support business decision-making.
+A production-oriented, end-to-end decision intelligence system that predicts customer churn, quantifies revenue risk, and enables proactive business action using machine learning and automated pipelines.
 
-The system integrates data engineering, machine learning, DevOps automation, and business intelligence into a single, scalable architecture.
+This project is designed to reflect **real-world data workflows**, not notebook-only experimentation.
 
-Business Problem
+---
 
-Customer churn directly impacts revenue and growth.
-Organizations require early risk detection, impact estimation, and automated deployment of predictive systems to proactively retain high-value customers.
+## 🔍 Problem Statement
 
-Solution
+Customer churn directly impacts revenue, but most organizations detect it **after** the loss occurs.
 
-This platform:
+This project answers three critical business questions:
+1. **Who is likely to churn next?**  
+2. **How much revenue is at risk due to churn?**  
+3. **Which customers should be prioritized for retention?**
 
-Analyzes historical customer behavior
+---
 
-Predicts churn probabilities using ML models
+## 🎯 Solution Overview
 
-Quantifies expected revenue loss
+The system ingests raw customer data, processes it through a structured ML pipeline, and exposes churn predictions via an API-ready architecture.
 
-Deploys predictions through APIs
+### Key Outputs
+- Churn probability (0–100%) per customer  
+- Risk buckets: Low / Medium / High  
+- Revenue impact estimation  
+- Priority score = Churn Risk × Revenue Impact  
 
-Updates business dashboards automatically
+---
 
-Retrains and redeploys models using DevOps pipelines
+## 🧠 Machine Learning Details
 
-Architecture Overview
-Raw Data → SQL Warehouse → Feature Engineering → ML Training
-        → Prediction API → Database → Power BI Dashboard
-        → CI/CD Automation → Kubernetes Deployment
+- **Problem Type:** Binary Classification  
+- **Target Variable:** churn (0 = retained, 1 = churned)
 
-Dataset
+### Models
+- Logistic Regression (baseline)
+- Random Forest
+- XGBoost (optional)
 
-IBM Telco Customer Churn Dataset
+### Metrics
+- ROC-AUC  
+- Precision / Recall  
+- Feature Importance  
 
-Structured customer-level historical data
+---
 
-Feature engineering applied to simulate real operational environments
+## 🏗️ System Architecture
 
-Data Pipeline
+Raw Data → Ingestion → Cleaning → Feature Engineering → Model Training → API → Dashboard
 
-Raw data ingestion into SQL
+---
 
-Data cleaning and validation
+## 📁 Project Structure
 
-Feature engineering and transformation
+DS-ML-DevOps/  
+├── data/  
+│   ├── raw/  
+│   └── processed/  
+├── src/  
+│   ├── ingestion.py  
+│   ├── cleaning.py  
+│   ├── features.py  
+│   ├── train.py  
+│   └── evaluate.py  
+├── api/  
+│   └── app.py  
+├── models/  
+├── notebooks/  
+│   └── eda.ipynb  
+├── requirements.txt  
+└── README.md  
 
-Model-ready dataset creation
+---
 
-Machine Learning
+## 📦 Dataset Strategy
 
-Problem Type: Binary Classification (Churn Prediction)
+- **Sample Dataset:** committed for reproducibility  
+- **Real Dataset:** stored locally, ignored via `.gitignore`  
 
-Models Used:
+Same schema, same pipeline, different scale.
 
-Logistic Regression (baseline)
+---
 
-Random Forest (final)
+## 🔄 Pipeline Stages
 
-Evaluation Metrics:
+1. Raw Data Ingestion (no transformations)  
+2. Data Cleaning & Validation  
+3. Feature Engineering  
+4. Model Training & Evaluation  
 
-ROC-AUC
+---
 
-Precision / Recall
+## 🌐 API (Planned)
 
-Outputs:
+Example response:
+```json
+{
+  "customer_id": 123,
+  "churn_probability": 0.82,
+  "risk_level": "HIGH",
+  "expected_revenue_loss": 5400
+}
+```
 
-Churn probability
+---
 
-Risk category
+## 🚀 DevOps (Planned)
 
-Revenue impact estimation
+- Dockerized API  
+- CI/CD pipeline  
+- Automated retraining  
+- Scalable deployment  
 
-API Layer
+---
 
-Built using FastAPI
+## 🧪 How to Run
 
-Endpoints:
+```bash
+pip install -r requirements.txt
+python src/ingestion.py
+```
 
-/predict
+---
 
-/health
+## 💡 Why This Project
 
-Serves model predictions in JSON format
+- Real business problem  
+- Production-grade pipeline  
+- Recruiter-friendly system design  
 
-Dashboard & Analytics
+---
 
-Built using Power BI
+## 📌 Next Steps
 
-Auto-refreshes from SQL database
-
-Displays:
-
-Churn trends
-
-High-risk customers
-
-Revenue impact
-
-Model performance metrics
-
-DevOps & Automation
-
-Docker for containerization
-
-Kubernetes for orchestration
-
-Jenkins for CI/CD pipelines
-
-Terraform for AWS infrastructure provisioning
-
-Ansible for configuration management
-
-Automated model retraining and deployment on new data
-
-Tech Stack
-
-Python, Pandas, NumPy
-
-SQL (PostgreSQL/MySQL)
-
-Scikit-learn
-
-FastAPI
-
-Power BI
-
-Docker, Kubernetes
-
-Jenkins, Terraform, Ansible
-
-Git & GitHub
-
-Assumptions
-
-Operational features (complaints, payment delays) are simulated from historical behavior.
-
-Date-related attributes are derived from tenure-based logic.
-
-Predictions support decision-making and do not replace human judgment.
-
-Future Enhancements
-
-Drift detection
-
-Advanced monitoring
-
-Multi-model experimentation
-
-Streaming ingestion
-
-Author
-
-Umang Garg
-Data Science | Machine Learning | DevOps
+- Cleaning pipeline  
+- Feature engineering  
+- Model training  
+- API deployment  
