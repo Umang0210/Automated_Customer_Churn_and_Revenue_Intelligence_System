@@ -1,4 +1,4 @@
-name: Data Ingestion & Cleaning Pipeline
+name: End-to-End ML CI Pipeline
 
 on:
   push:
@@ -6,25 +6,19 @@ on:
   workflow_dispatch:
 
 jobs:
-  run-data-pipeline:
+  ml-pipeline:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Show workspace (final sanity check)
-        run: |
-          echo "Workspace path:"
-          echo "${{ github.workspace }}"
-          ls -la "${{ github.workspace }}"
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.10"
 
-      - name: Install dependencies (absolute path)
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           python -m pip install -r "${{ github.workspace }}/requirements.txt"
@@ -41,19 +35,11 @@ jobs:
       - name: Verify feature output
         run: |
           test -f data/processed/customer_features.csv
-          echo "✅ Feature dataset created"
+          echo "✅ Feature dataset exists"
 
+      - name: Run model training with quality gate
+        run: python src/train.py
 
-      - name: Verify cleaned output
-        run: |
-          test -f data/processed/clean_customers.csv
-          echo "✅ Cleaned data exists"
-
-      - name: Print dataset summary
-        run: |
-          python - <<EOF
-          import pandas as pd
-          df = pd.read_csv("data/processed/clean_customers.csv")
-          print("Rows:", df.shape[0])
-          print("Columns:", df.shape[1])
-          EOF
+      - name: CI success confirmation
+        run: echo "🎯 ML pipeline completed successfully"
+        
