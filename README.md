@@ -28,6 +28,11 @@ The system ingests raw customer data, processes it through a structured ML pipel
 - Revenue impact estimation  
 - Priority score = Churn Risk × Revenue Impact  
 
+### Business Insights Generated
+
+- Identified high-risk customer segments and quantified churn impact
+- Estimated revenue at risk using churn probabilities and customer lifetime value
+- Generated priority scores to guide retention strategies
 ---
 
 ## 🧠 Machine Learning Details
