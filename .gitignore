@@ -9,3 +9,6 @@ data/raw/*real*.csv
 
 # Model artifacts
 models/
+
+# Data codes
+data/
