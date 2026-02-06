@@ -49,6 +49,19 @@ jobs:
           docker run -d -p 8000:8000 --name churn-api-test churn-ml-api
           sleep 10
           curl --fail http://localhost:8000/health
+      - name: Test predict endpoint
+        run: |
+          curl -X POST http://localhost:8000/predict \
+            -H "Content-Type: application/json" \
+            -d '{
+              "age": 42,
+              "tenure": 12,
+              "balance": 60000,
+              "num_products": 2,
+              "has_credit_card": 1,
+              "is_active_member": 1,
+              "estimated_salary": 80000
+            }'
 
       # 8️⃣ Cleanup
       - name: Cleanup
