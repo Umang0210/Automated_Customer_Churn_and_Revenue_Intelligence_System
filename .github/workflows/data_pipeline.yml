@@ -54,13 +54,12 @@ jobs:
           RESPONSE=$(curl -s --fail -X POST http://localhost:8000/predict \
             -H "Content-Type: application/json" \
             -d '{
-              "age": 42,
+              "gender": "Female",
+              "seniorcitizen": 0,
+              "contract": "Month-to-month",
               "tenure": 12,
-              "balance": 60000,
-              "num_products": 2,
-              "has_credit_card": 1,
-              "is_active_member": 1,
-              "estimated_salary": 80000
+              "monthlycharges": 70.0,
+              "totalcharges": 840.0
             }')
 
           echo "Response: $RESPONSE"
