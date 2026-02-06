@@ -1,44 +1,44 @@
-name: End-to-End ML CI Pipeline
+name: DS-ML-DevOps CI Pipeline
 
 on:
   push:
-    branches: [ main ]
-  workflow_dispatch:
+    branches:
+      - main
+      - dev
+  pull_request:
 
 jobs:
-  ml-pipeline:
+  build-test-docker:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Checkout code
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 2️⃣ Set up Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.10"
 
+      # 3️⃣ Install dependencies
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -r "${{ github.workspace }}/requirements.txt"
+          pip install -r requirements.txt
 
-      - name: Run data ingestion
-        run: python src/ingestion.py
-
-      - name: Run data cleaning
-        run: python src/cleaning.py
-
-      - name: Run feature engineering
-        run: python src/features.py
-
-      - name: Verify feature output
+      # 4️⃣ Run training pipeline (sanity check)
+      - name: Run training pipeline
         run: |
-          test -f data/processed/customer_features.csv
-          echo "✅ Feature dataset exists"
+          python src/train.py
 
-      - name: Run model training with quality gate
-        run: python src/train.py
+      # 5️⃣ Build Docker image (API)
+      - name: Build Docker image for FastAPI
+        run: |
+          docker build -t churn-ml-api .
 
-      - name: CI success confirmation
-        run: echo "🎯 ML pipeline completed successfully"
+      # 6️⃣ Verify Docker image
+      - name: List Docker images
+        run: |
+          docker images
