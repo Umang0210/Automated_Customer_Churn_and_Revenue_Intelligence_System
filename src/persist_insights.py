@@ -8,7 +8,7 @@ from sqlalchemy import create_engine
 # =====================================================
 # CONFIG
 # =====================================================
-DB_URI = "mysql+pymysql://username:password@localhost:3306/churn_intelligence"
+DB_URI = "mysql+pymysql://churn_user:StrongPassword123@localhost:3306/churn_intelligence"
 
 DATA_PATH = "data/processed/customer_features.csv"
 MODEL_PATH = "models/churn_model.pkl"
@@ -194,6 +194,17 @@ model_run.to_sql(
     engine,
     if_exists="append",
     index=False
+)
+
+# -----------------------------
+# NORMALIZE TARGET COLUMN
+# -----------------------------
+df["churn"] = (
+    df["churn"]
+    .astype(str)
+    .str.strip()
+    .str.lower()
+    .map({"yes": 1, "no": 0})
 )
 
 
