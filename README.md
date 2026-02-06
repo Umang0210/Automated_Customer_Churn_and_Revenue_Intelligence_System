@@ -1,144 +1,112 @@
 # 📊 Customer Churn & Revenue Optimization Intelligence System  
-**End-to-End Data Science + Machine Learning + DevOps Project**
+**End-to-End Data Science + Machine Learning + DevOps + Web Application**
 
-A production-oriented, end-to-end decision intelligence system that predicts customer churn, quantifies revenue risk, and enables proactive business action using machine learning and automated pipelines.
+> **Status:** 🚧 In Development | **Version:** 0.8.0-beta
 
-This project is designed to reflect **real-world data workflows**, not notebook-only experimentation.
+A production-oriented decision intelligence system that predicts customer churn, quantifies revenue risk, and empowers business users. This project demonstrates a full lifecycle from raw data to deployed application, with ongoing enhancements for cloud and BI integration.
 
 ---
 
 ## 🔍 Problem Statement
 
-Customer churn directly impacts revenue, but most organizations detect it **after** the loss occurs.
-
-This project answers three critical business questions:
+Customer churn directly impacts revenue, but most organizations detect it **after** the loss occurs. This system answers three critical business questions:
 1. **Who is likely to churn next?**  
 2. **How much revenue is at risk due to churn?**  
 3. **Which customers should be prioritized for retention?**
 
 ---
 
-## 🎯 Solution Overview
+## 🎯 Solution Architecture
 
-The system ingests raw customer data, processes it through a structured ML pipeline, and exposes churn predictions via an API-ready architecture.
+The system operates as a full-stack data product:
+1. **ML Pipeline:** Ingests and processes data to train a predictive model.
+2. **Inference Engine:** Generates churn probabilities and risk buckets for new customers.
+3. **Database Layer:** Persists insights into a MySQL database for structured access.
+4. **API Layer:** fastAPI backend serving real-time insights.
+5. **Intelligence Dashboard:** Interactive frontend for business stakeholders.
 
 ### Key Outputs
-- Churn probability (0–100%) per customer  
-- Risk buckets: Low / Medium / High  
-- Revenue impact estimation  
-- Priority score = Churn Risk × Revenue Impact  
-
-### Business Insights Generated
-
-- Identified high-risk customer segments and quantified churn impact
-- Estimated revenue at risk using churn probabilities and customer lifetime value
-- Generated priority scores to guide retention strategies
----
-
-## 🧠 Machine Learning Details
-
-- **Problem Type:** Binary Classification  
-- **Target Variable:** churn (0 = retained, 1 = churned)
-
-### Models
-- Logistic Regression (baseline)
-- Random Forest
-- XGBoost (optional)
-
-### Metrics
-- ROC-AUC  
-- Precision / Recall  
-- Feature Importance  
+- **Churn Probability:** 0–100% risk score per customer.
+- **Risk Segmentation:** Low / Medium / High risk buckets.
+- **Revenue at Risk:** Quantified financial impact ($).
+- **Priority Score:** Ranking metric to guide retention efforts.
 
 ---
 
-## 🏗️ System Architecture
+## � Current Progress & Features
 
-Raw Data → Ingestion → Cleaning → Feature Engineering → Model Training → API → Dashboard
+### ✅ Completed Modules
+- [x] **Data Pipeline**: Ingestion, Cleaning, and Feature Engineering.
+- [x] **Machine Learning**: Model training (Random Forest) and Evaluation.
+- [x] **Database Integration**: MySQL storage for predictions and KPIs.
+- [x] **API Development**: FastAPI backend for real-time inference.
+- [x] **Web Dashboard**: Interactive HTML/CSS/JS frontend.
+- [x] **Containerization**: Docker support for the API/Webapp.
+
+### 🚧 Roadmap (Upcoming)
+- [ ] **Cloud Deployment (AWS):** Deploying the application to AWS EC2/ECS.
+- [ ] **Business Intelligence**: Integration with **PowerBI** for advanced reporting.
+- [ ] **Advanced DevOps**:
+    - CI/CD Pipelines (GitHub Actions) enhancements.
+    - Infrastructure as Code (Terraform).
+    - Monitoring (Prometheus/Grafana).
 
 ---
 
 ## 📁 Project Structure
 
+```text
 DS-ML-DevOps/  
-├── data/  
-│   ├── raw/  
-│   └── processed/  
-├── src/  
-│   ├── ingestion.py  
-│   ├── cleaning.py  
-│   ├── features.py  
-│   ├── train.py  
-│   └── evaluate.py  
-├── api/  
-│   └── app.py  
-├── models/   
-├── requirements.txt  
-└── README.md  
-
----
-
-## 📦 Dataset Strategy
-
-- **Sample Dataset:** committed for reproducibility  
-- **Real Dataset:** stored locally, ignored via `.gitignore`  
-
-Same schema, same pipeline, different scale.
-
----
-
-## 🔄 Pipeline Stages
-
-1. Raw Data Ingestion (no transformations)  
-2. Data Cleaning & Validation  
-3. Feature Engineering  
-4. Model Training & Evaluation  
-
----
-
-## 🌐 API (Planned)
-
-Example response:
-```json
-{
-  "customer_id": 123,
-  "churn_probability": 0.82,
-  "risk_level": "HIGH",
-  "expected_revenue_loss": 5400
-}
+├── .github/workflows/    # CI/CD Pipelines
+├── api/                  # Main Inference API
+│   └── app.py            
+├── data/                 # Raw and Processed Data
+├── models/               # Serialized Models (pkl)
+├── src/                  # Source Code
+│   ├── webapp/           # Dashboard & Backend
+│   │   ├── static/       # Frontend Assets
+│   │   └── main.py       # Dashboard API
+│   ├── business_insights.py
+│   ├── ingestion.py
+│   ├── persist_insights.py
+│   └── train.py
+├── Dockerfile            # Containerization
+├── requirements.txt      # Dependencies
+└── README.md             # Documentation
 ```
 
 ---
 
-## 🚀 DevOps (Planned)
+## 🧪 How to Run Locally
 
-- Dockerized API  
-- CI/CD pipeline  
-- Automated retraining  
-- Scalable deployment  
+### Prerequisites
+- Python 3.11+
+- MySQL Server (running locally)
 
----
-
-## 🧪 How to Run
-
+### 1. Setup Environment
 ```bash
 pip install -r requirements.txt
-python src/ingestion.py
+pip install -r src/webapp/requirements.txt
 ```
 
+### 2. Run the ML Pipeline
+```bash
+# Ingest, Clean, Train, and Persist Data
+python src/ingestion.py
+python src/train.py
+python src/persist_insights.py
+```
+
+### 3. Start the Web Application
+```bash
+python -m uvicorn src.webapp.main:app --port 8000 --reload
+```
+Access the dashboard at: **http://127.0.0.1:8000/static/index.html**
+
 ---
 
-## 💡 Why This Project
+## 💡 Why This Project?
 
-- Real business problem  
-- Production-grade pipeline  
-- Recruiter-friendly system design  
-
----
-
-## 📌 Next Steps
-
-- Cleaning pipeline  
-- Feature engineering  
-- Model training  
-- API deployment  
+- **Real Business Value:** Moves beyond accuracy metrics to financial impact.
+- **Full-Stack Data Science:** Covers the entire lifecycle from data extraction to user-facing dashboard.
+- **Scalable Design:** Built with microservices and containerization in mind.
