@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Churn Intelligence Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div>
+                <h1>Churn Intelligence</h1>
+                <p class="subtitle">Revenue Optimization & Risk Intelligence System</p>
+            </div>
+            <div class="model-badge">
+                <span class="status-dot"></span>
+                <span id="model-version">Loading Model...</span>
+            </div>
+        </header>
+
+        <!-- KPI Grid -->
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <h3>Total Revenue</h3>
+                <div class="value" id="total-revenue">--</div>
+                <div class="trend positive">Monthly Charges * Tenure</div>
+            </div>
+            <div class="kpi-card">
+                <h3>Revenue at Risk</h3>
+                <div class="value danger" id="revenue-at-risk">--</div>
+                <div class="trend negative">High Priority</div>
+            </div>
+            <div class="kpi-card">
+                <h3>Churn Rate</h3>
+                <div class="value" id="churn-rate">--%</div>
+                <div class="trend neutral">Predicted Avg</div>
+            </div>
+            <div class="kpi-card">
+                <h3>High Risk Customers</h3>
+                <div class="value danger" id="high-risk-pct">--%</div>
+                <div class="trend negative">Prob > 70%</div>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="main-grid">
+            <!-- Charts Section -->
+            <div class="chart-section">
+                <div class="card">
+                    <h2>Churn Risk by Contract Type</h2>
+                    <div class="chart-container">
+                        <canvas id="segmentChart"></canvas>
+                    </div>
+                </div>
+                <div class="card mt-4">
+                    <h2>Model Performance Metrics</h2>
+                    <div class="metrics-list" id="metrics-list">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table Section -->
+            <div class="table-section">
+                <div class="card h-full">
+                    <div class="card-header">
+                        <h2>Top High-Risk Customers</h2>
+                        <button class="btn-export">Export CSV</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Customer ID</th>
+                                    <th>Risk Level</th>
+                                    <th>Churn Prob</th>
+                                    <th>Revenue at Risk</th>
+                                    <th>Total Value</th>
+                                </tr>
+                            </thead>
+                            <tbody id="customer-table-body">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

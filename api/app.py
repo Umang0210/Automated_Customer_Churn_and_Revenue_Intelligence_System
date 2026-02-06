@@ -25,3 +25,13 @@ def predict(data: dict):
         "churn_probability": round(float(prob), 4),
         "risk_level": "HIGH" if prob > 0.7 else "MEDIUM" if prob > 0.4 else "LOW"
     }
+
+
+@app.get("/")
+def root():
+    return {
+        "service": "churn-ml-api",
+        "status": "running",
+        "health": "/health",
+        "predict": "/predict"
+    }

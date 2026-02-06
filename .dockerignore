@@ -1,9 +1,7 @@
-__pycache__/
-*.pyc
-*.pyo
-*.pkl
-.env
 .git
 .gitignore
+__pycache__/
+*.pyc
 data/
 notebooks/
+.env

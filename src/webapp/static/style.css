@@ -1,0 +1,228 @@
+:root {
+    --bg-dark: #0f172a;
+    --card-bg: #1e293b;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --accent: #3b82f6;
+    --danger: #ef4444;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --border: #334155;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+.dashboard-container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Header */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.model-badge {
+    background: var(--card-bg);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--success);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--success);
+}
+
+/* KPI Grid */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.kpi-card {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    transition: transform 0.2s;
+}
+
+.kpi-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+}
+
+.kpi-card h3 {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+}
+
+.kpi-card .value {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.value.danger { color: var(--danger); }
+
+.trend {
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.trend.positive { color: var(--success); }
+.trend.negative { color: var(--danger); }
+.trend.neutral { color: var(--text-secondary); }
+
+/* Main Grid */
+.main-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 1.5rem;
+}
+
+@media (max-width: 1024px) {
+    .main-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.card {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.h-full { height: 100%; }
+.mt-4 { margin-top: 1.5rem; }
+
+h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+/* Table */
+.table-responsive {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    text-align: left;
+    padding: 1rem;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border);
+}
+
+td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+}
+
+tr:last-child td { border-bottom: none; }
+
+.badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.badge-high { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
+.badge-medium { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
+.badge-low { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+
+.btn-export {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+}
+
+.btn-export:hover {
+    background: var(--border);
+}
+
+/* Metrics List */
+.metrics-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.metric-item {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.metric-label {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    margin-bottom: 0.25rem;
+}
+
+.metric-val {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
