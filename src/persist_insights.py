@@ -218,3 +218,4 @@ print("✅ Customers_predictions")
 print("✅ Business_kpis")
 print("✅ Segment_insights")
 print("✅ Model_runs")
+
