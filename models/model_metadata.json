@@ -1,6 +1,6 @@
 {
     "model_version": "v1.1.0",
-    "training_date": "2026-02-02 06:03:00",
+    "training_date": "2026-02-06 19:34:24",
     "selected_model": "random_forest",
     "baseline_model": "logistic_regression",
     "metrics": {
