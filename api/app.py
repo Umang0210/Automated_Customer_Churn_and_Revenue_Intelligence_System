@@ -1,11 +1,20 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
 import joblib
 import pandas as pd
 import json
 
 app = FastAPI(title="Churn Prediction API")
 
+# ======================
+# Configuration
+# ======================
+HIGH_RISK_THRESHOLD = 0.7
+MEDIUM_RISK_THRESHOLD = 0.4
+
+# ======================
 # Load Assets
+# ======================
 model = joblib.load("models/churn_model.pkl")
 
 try:
@@ -17,52 +26,100 @@ try:
     with open("models/feature_list.json", "r") as f:
         feature_list = json.load(f)
 except FileNotFoundError:
-    feature_list = []  # Fallback or error
+    feature_list = []
 
+# ======================
+# Schemas
+# ======================
+class ChurnRequest(BaseModel):
+    customer_id: int
+    monthly_charges: float
+    usage_frequency: int
+    complaints_count: int
+    payment_delays: int
+
+    # optional categorical fields (future-safe)
+    gender: str | None = "missing"
+    seniorcitizen: str | None = "missing"
+    contract: str | None = "missing"
+
+
+class ChurnResponse(BaseModel):
+    customer_id: int
+    churn_probability: float
+    risk_level: str
+    expected_revenue_loss: float
+    priority_score: float
+
+
+# ======================
+# Health
+# ======================
 @app.get("/health")
 def health():
     return {"status": "ok"}
 
-@app.post("/predict")
-def predict(data: dict):
+
+# ======================
+# Prediction
+# ======================
+@app.post("/predict", response_model=ChurnResponse)
+def predict(request: ChurnRequest):
+
     # 1. Create DataFrame
-    df = pd.DataFrame([data])
-    
-    # 2. Preprocessing (match train.py)
-    # Normalize columns
+    df = pd.DataFrame([request.dict()])
+
+    # 2. Normalize column names
     df.columns = df.columns.str.strip().str.lower().str.replace(" ", "_")
-    
-    # One-hot encode
+
+    # 3. One-hot encoding
     CATEGORICAL_COLS = ["gender", "seniorcitizen", "contract"]
-    # Ensure raw df has these cols (even if None) to avoid get_dummies error if missing entirely
+
     for col in CATEGORICAL_COLS:
         if col not in df.columns:
             df[col] = "missing"
-            
+
     df_encoded = pd.get_dummies(df, columns=CATEGORICAL_COLS, drop_first=True)
-    
-    # 3. Align Columns with Training Schema
-    # This ensures exact same columns in exact same order
+
+    # 4. Align features with training
     if feature_list:
         df_final = df_encoded.reindex(columns=feature_list, fill_value=0)
     else:
         df_final = df_encoded
 
-    # 4. Scale if scaler exists
+    # 5. Scale
     if scaler:
         X = scaler.transform(df_final)
     else:
         X = df_final
 
-    # 5. Predict
-    prob = model.predict_proba(X)[0][1]
+    # 6. Predict
+    prob = float(model.predict_proba(X)[0][1])
 
-    return {
-        "churn_probability": round(float(prob), 4),
-        "risk_level": "HIGH" if prob > 0.7 else "MEDIUM" if prob > 0.4 else "LOW"
-    }
+    # 7. Risk bucket
+    if prob >= HIGH_RISK_THRESHOLD:
+        risk = "HIGH"
+    elif prob >= MEDIUM_RISK_THRESHOLD:
+        risk = "MEDIUM"
+    else:
+        risk = "LOW"
+
+    # 8. Business logic
+    expected_loss = request.monthly_charges * 12
+    priority_score = prob * expected_loss
+
+    return ChurnResponse(
+        customer_id=request.customer_id,
+        churn_probability=round(prob, 4),
+        risk_level=risk,
+        expected_revenue_loss=round(expected_loss, 2),
+        priority_score=round(priority_score, 2)
+    )
 
 
+# ======================
+# Root
+# ======================
 @app.get("/")
 def root():
     return {
