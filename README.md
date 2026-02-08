@@ -58,10 +58,10 @@ graph TD
         DashboardBackend --> DashboardFrontend[("Web Dashboard\n(HTML/JS)")]
     end
 
-    classDef script fill:#f9f,stroke:#333,stroke-width:2px;
-    classDef data fill:#bbf,stroke:#333,stroke-width:2px;
-    classDef service fill:#bfb,stroke:#333,stroke-width:2px;
-    classDef db fill:#fbb,stroke:#333,stroke-width:2px;
+    classDef script fill:#f9f,stroke:#333,stroke-width:2px,color:#000;
+    classDef data fill:#bbf,stroke:#333,stroke-width:2px,color:#000;
+    classDef service fill:#bfb,stroke:#333,stroke-width:2px,color:#000;
+    classDef db fill:#fbb,stroke:#333,stroke-width:2px,color:#000;
 
     class Ingestion,Cleaning,Features,Training,BatchInference script;
     class RawData,RawSnapshot,CleanData,FeatureData,ModelArtifacts data;
