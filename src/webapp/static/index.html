@@ -4,11 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Churn Intelligence Dashboard</title>
+    <title>Churn Command Center</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
 </head>
@@ -18,174 +20,269 @@
         <!-- Sidebar Navigation -->
         <nav class="sidebar">
             <div class="logo">
-                <div class="logo-icon">C</div>
-                <span>ChurnIntel</span>
+                <div class="logo-icon">⚡</div>
+                <span>ChurnCmd</span>
             </div>
             <ul class="nav-links">
-                <li class="active"><a href="#dashboard">Dashboard</a></li>
-                <li><a href="#customers">Customers</a></li>
-                <li><a href="#model">Model Health</a></li>
-                <li><a href="#architecture">Architecture</a></li>
+                <li class="active" onclick="switchTab('dashboard')">
+                    <a href="#">📊 Overview</a>
+                </li>
+                <li onclick="switchTab('predict')">
+                    <a href="#">🧠 Live Predictor</a>
+                </li>
+                <li onclick="switchTab('customers')">
+                    <a href="#">👥 Customers</a>
+                </li>
+                <li onclick="switchTab('architecture')">
+                    <a href="#">⚙️ System</a>
+                </li>
             </ul>
             <div class="user-profile">
                 <div class="avatar">DA</div>
                 <div class="user-info">
-                    <span class="name">Admin User</span>
-                    <span class="role">Data Scientist</span>
+                    <span class="name">Admin</span>
+                    <span class="role">Data Sci</span>
                 </div>
             </div>
         </nav>
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Header -->
-            <header class="top-bar">
-                <div class="page-title">
-                    <h1>Overview</h1>
-                    <p>Real-time revenue risk analysis and churn predictions</p>
-                </div>
-                <div class="header-actions">
-                    <div class="model-status">
-                        <span class="status-dot"></span>
-                        <span id="model-version">Model v2.0 Live</span>
-                    </div>
-                </div>
-            </header>
 
-            <!-- Error Banner -->
-            <div id="error-banner" class="error-banner" style="display: none;">
-                ⚠️ <strong>Connection Failed:</strong> Data cannot be loaded. Please ensure the backend server is
-                running and access this page via <code>http://127.0.0.1:8000/...</code>
-            </div>
+            <!-- VIEW: DASHBOARD -->
+            <div id="view-dashboard" class="view-section active">
+                <header class="top-bar">
+                    <div class="page-title">
+                        <h1>Command Center</h1>
+                        <p>Real-time Intelligence System v2.0</p>
+                    </div>
+                </header>
 
-            <!-- KPI Cards -->
-            <div class="kpi-grid">
-                <div class="kpi-card highlight-card">
-                    <div class="kpi-icon">💰</div>
-                    <div class="kpi-info">
-                        <h3>Total Revenue</h3>
-                        <div class="value" id="total-revenue">--</div>
-                    </div>
+                <div id="error-banner" class="error-banner" style="display: none;">
+                    ⚠️ <strong>Connection Error:</strong> Ensure backend is running.
                 </div>
-                <div class="kpi-card danger-card">
-                    <div class="kpi-icon">⚠️</div>
-                    <div class="kpi-info">
-                        <h3>Revenue at Risk</h3>
-                        <div class="value" id="revenue-at-risk">--</div>
-                    </div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-icon">📉</div>
-                    <div class="kpi-info">
-                        <h3>Churn Rate</h3>
-                        <div class="value" id="churn-rate">--%</div>
-                    </div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-icon">👥</div>
-                    <div class="kpi-info">
-                        <h3>High Risk Customers</h3>
-                        <div class="value" id="high-risk-pct">--%</div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Charts Grid -->
-            <div class="charts-grid section-grid">
-                <!-- 1. Risk Distribution -->
-                <div class="card chart-card">
-                    <div class="card-header">
-                        <h2>Risk Distribution</h2>
-                        <button class="icon-btn">⋮</button>
+                <!-- KPI Cards -->
+                <div class="kpi-grid">
+                    <div class="kpi-card highlight-card">
+                        <div class="kpi-icon">💰</div>
+                        <div class="kpi-info">
+                            <h3>Total Revenue</h3>
+                            <div class="value" id="total-revenue">--</div>
+                        </div>
                     </div>
-                    <div class="chart-container">
-                        <canvas id="riskDistChart"></canvas>
+                    <div class="kpi-card danger-card">
+                        <div class="kpi-icon">⚠️</div>
+                        <div class="kpi-info">
+                            <h3>Revenue at Risk</h3>
+                            <div class="value" id="revenue-at-risk">--</div>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon">📉</div>
+                        <div class="kpi-info">
+                            <h3>Churn Rate</h3>
+                            <div class="value" id="churn-rate">--%</div>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon">🎯</div>
+                        <div class="kpi-info">
+                            <h3>Model Accuracy</h3>
+                            <div class="value">92%</div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- 2. Contract Segments -->
-                <div class="card chart-card">
-                    <div class="card-header">
-                        <h2>Churn by Contract</h2>
+                <!-- Charts Grid -->
+                <div class="charts-grid section-grid">
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <h2>Risk Distribution</h2>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="riskDistChart"></canvas>
+                        </div>
                     </div>
-                    <div class="chart-container">
-                        <canvas id="segmentChart"></canvas>
+                    <div class="card chart-card wide">
+                        <div class="card-header">
+                            <h2>Churn by Contract</h2>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="segmentChart"></canvas>
+                        </div>
                     </div>
                 </div>
 
-                <!-- 3. Model Performance (Radar) -->
-                <div class="card chart-card">
-                    <div class="card-header">
-                        <h2>Model Performance</h2>
-                    </div>
-                    <div class="chart-container">
-                        <canvas id="modelRadarChart"></canvas>
+                <div class="charts-grid section-grid">
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <h2>Model Diagnostics</h2>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="modelRadarChart"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Architecture Diagram -->
-            <div class="card architecture-card" id="architecture">
-                <div class="card-header">
-                    <h2>System Architecture</h2>
-                </div>
-                <div class="mermaid-container">
-                    <div class="mermaid">
-                        graph LR
-                        subgraph Data Pipeline
-                        A[Raw Data] --> B(Ingestion)
-                        B --> C(Cleaning)
-                        C --> D(Feature Eng)
-                        end
-                        subgraph Model
-                        D --> E{Train Model}
-                        E --> F[Model Artifacts]
-                        end
-                        subgraph Serving
-                        F --> G[FastAPI]
-                        D --> H(Batch Inference)
-                        H --> I[(MySQL DB)]
-                        I --> J[Dashboard]
-                        end
-                        classDef pipeline fill:#3b82f6,stroke:#1e3a8a,stroke-width:2px,color:white;
-                        classDef model fill:#10b981,stroke:#047857,stroke-width:2px,color:white;
-                        classDef serving fill:#8b5cf6,stroke:#5b21b6,stroke-width:2px,color:white;
-                        class A,B,C,D pipeline;
-                        class E,F model;
-                        class G,H,I,J serving;
+            <!-- VIEW: LIVE PREDICTOR -->
+            <div id="view-predict" class="view-section" style="display: none;">
+                <header class="top-bar">
+                    <div class="page-title">
+                        <h1>Live Predictor</h1>
+                        <p>Manual inference interface for customer risk scoring.</p>
+                    </div>
+                </header>
+
+                <div class="predict-layout">
+                    <!-- Form -->
+                    <div class="card form-card">
+                        <h2>📝 Customer Details</h2>
+                        <form id="predict-form">
+                            <div class="form-grid">
+                                <div class="input-group">
+                                    <label>Customer ID</label>
+                                    <input type="text" name="customer_id" placeholder="e.g. CUST-9999" required
+                                        value="TEST-001">
+                                </div>
+                                <div class="input-group">
+                                    <label>Est. Annual Revenue ($)</label>
+                                    <input type="number" name="revenue" placeholder="5000" required value="4500">
+                                </div>
+                                <div class="input-group">
+                                    <label>Monthly Charges ($)</label>
+                                    <input type="number" name="monthly_charges" placeholder="85" required value="95.5">
+                                </div>
+                                <div class="input-group">
+                                    <label>Tenure (Months)</label>
+                                    <input type="number" name="tenure" placeholder="12" required value="4">
+                                </div>
+                                <div class="input-group">
+                                    <label>Contract Type</label>
+                                    <select name="contract">
+                                        <option value="Month-to-month">Month-to-month</option>
+                                        <option value="One year">One year</option>
+                                        <option value="Two year">Two year</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Gender</label>
+                                    <select name="gender">
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Senior Citizen</label>
+                                    <select name="seniorcitizen">
+                                        <option value="No">No</option>
+                                        <option value="Yes">Yes</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-primary btn-block btn-lg">⚡ Analyze Risk</button>
+                        </form>
+                    </div>
+
+                    <!-- Result -->
+                    <div class="card result-card hidden" id="prediction-result">
+                        <div class="result-header">
+                            <h2>Analysis Result</h2>
+                            <span class="timestamp">Just now</span>
+                        </div>
+
+                        <div class="score-display">
+                            <div class="score-ring">
+                                <svg viewBox="0 0 36 36" class="circular-chart">
+                                    <path class="circle-bg"
+                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                    <path id="score-circle" class="circle" stroke-dasharray="0, 100"
+                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                </svg>
+                                <div class="percentage">
+                                    <span id="pred-prob">--%</span>
+                                    <small>Churn Prob</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="risk-badge-lg" id="pred-risk">Analyzing...</div>
+
+                        <div class="impact-stats">
+                            <div class="stat">
+                                <span class="label">Potential Loss</span>
+                                <span class="val danger" id="pred-loss">$0</span>
+                            </div>
+                            <div class="stat">
+                                <span class="label">Priority Score</span>
+                                <span class="val" id="pred-priority">0.0</span>
+                            </div>
+                        </div>
+
+                        <div class="alert-box">
+                            ℹ️ Prediction saved to database.
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- High Risk Customers Table -->
-            <div class="card table-card" id="customers">
-                <div class="card-header">
-                    <h2>High Priority Customers</h2>
-                    <button class="btn-primary">Export CSV</button>
-                </div>
-                <div class="table-responsive">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Customer ID</th>
-                                <th>Risk Level</th>
-                                <th>Churn Prob</th>
-                                <th>Revenue at Risk</th>
-                                <th>Total Value</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="customer-table-body">
-                            <!-- Populated by JS -->
-                        </tbody>
-                    </table>
+            <!-- VIEW: CUSTOMERS -->
+            <div id="view-customers" class="view-section" style="display: none;">
+                <header class="top-bar">
+                    <div class="page-title">
+                        <h1>High Risk Customers</h1>
+                    </div>
+                </header>
+                <div class="card table-card">
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Customer ID</th>
+                                    <th>Risk Level</th>
+                                    <th>Churn Prob</th>
+                                    <th>Revenue at Risk</th>
+                                    <th>Total Value</th>
+                                </tr>
+                            </thead>
+                            <tbody id="customer-table-body">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
+
+            <!-- VIEW: ARCHITECTURE -->
+            <div id="view-architecture" class="view-section" style="display: none;">
+                <div class="card architecture-card">
+                    <div class="mermaid-container">
+                        <div class="mermaid">
+                            graph LR
+                            subgraph Interface
+                            UA[User Action] --> UI[Dashboard UI]
+                            UI --> API{Unified API}
+                            end
+                            subgraph Backend_Logic
+                            API -->|Get Stats| SQL[(MySQL)]
+                            API -->|Predict| ML[ML Model]
+                            ML -->|Save Result| SQL
+                            end
+                            classDef ui fill:#8b5cf6,stroke:#5b21b6,color:white;
+                            classDef db fill:#3b82f6,stroke:#1e3a8a,color:white;
+                            class UA,UI ui;
+                            class SQL,API,ML db;
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </main>
     </div>
     <script src="script.js"></script>
     <script>
-        mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+        mermaid.initialize({ startOnLoad: true, theme: 'dark', securityLevel: 'loose' });
     </script>
 </body>
 
