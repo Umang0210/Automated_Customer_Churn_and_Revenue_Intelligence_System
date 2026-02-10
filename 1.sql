@@ -39,5 +39,13 @@
 --     training_rows INT,
 --     run_timestamp DATETIME
 -- );
-SELECT * FROM business_kpis;
-SELECT COUNT(*) FROM customers_predictions;
+-- ALTER TABLE customers_predictions
+-- MODIFY prediction_timestamp
+-- TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
+-- SELECT * FROM customers_predictions;
+
+-- DELETE FROM customers_predictions
+-- WHERE customer_id IS NULL;
+
+ALTER TABLE customers_predictions
+MODIFY customer_id VARCHAR(50) NOT NULL;
