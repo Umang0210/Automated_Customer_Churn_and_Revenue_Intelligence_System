@@ -17,6 +17,15 @@ def create_features(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
 
     # -------------------------------
+    # 🔥 STANDARDIZE COLUMN NAMES
+    # -------------------------------
+    df.columns = df.columns.str.strip().str.lower()
+
+    # Ensure consistent primary key naming
+    if "customerid" in df.columns:
+        df = df.rename(columns={"customerid": "customer_id"})
+
+    # -------------------------------
     # TENURE-BASED FEATURES
     # -------------------------------
     if "tenure" in df.columns:
@@ -47,7 +56,6 @@ def create_features(df: pd.DataFrame) -> pd.DataFrame:
     # -------------------------------
     # BUSINESS REVENUE COLUMN
     # -------------------------------
-    # This is REQUIRED for expected_revenue_loss calculation
     if "monthlycharges" in df.columns:
         df["revenue"] = df["monthlycharges"]
 

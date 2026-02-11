@@ -239,40 +239,7 @@
         </main>
     </div>
 
-    <script>
-        // Form submission handler
-        document.getElementById('predictionForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            // Simulate prediction result
-            const probability = (Math.random() * 100).toFixed(1);
-            const confidence = (85 + Math.random() * 10).toFixed(0);
-
-            let risk = 'LOW';
-            let riskColor = '#10b981';
-            let action = 'Continue monitoring';
-
-            if (probability > 70) {
-                risk = 'HIGH';
-                riskColor = '#ef4444';
-                action = 'Immediate intervention required';
-            } else if (probability > 40) {
-                risk = 'MEDIUM';
-                riskColor = '#f59e0b';
-                action = 'Schedule retention campaign';
-            }
-
-            // Display results
-            document.getElementById('resultProbability').textContent = probability + '%';
-            document.getElementById('resultProbability').style.color = riskColor;
-            document.getElementById('resultRisk').innerHTML = `<span style="color: ${riskColor};">● ${risk}</span>`;
-            document.getElementById('resultConfidence').textContent = confidence + '%';
-            document.getElementById('resultAction').textContent = action;
-
-            document.getElementById('predictionResult').style.display = 'block';
-            document.getElementById('predictionResult').scrollIntoView({ behavior: 'smooth' });
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 
 </html>
