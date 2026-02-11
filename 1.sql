@@ -1,5 +1,5 @@
 -- CREATE DATABASE churn_intelligence;
--- USE churn_intelligence;
+USE churn_intelligence;
 -- CREATE USER 'churn_user'@'localhost' IDENTIFIED BY 'StrongPassword123';
 -- GRANT ALL PRIVILEGES ON churn_intelligence.* TO 'churn_user'@'localhost';
 -- FLUSH PRIVILEGES;
@@ -47,5 +47,18 @@
 -- DELETE FROM customers_predictions
 -- WHERE customer_id IS NULL;
 
-ALTER TABLE customers_predictions
-MODIFY customer_id VARCHAR(50) NOT NULL;
+-- ALTER TABLE customers_predictions
+-- MODIFY customer_id VARCHAR(50) NOT NULL;
+
+-- CREATE TABLE customer_churn_analytics (
+--     customer_id VARCHAR(50) PRIMARY KEY,
+--     churn_probability FLOAT,
+--     risk_bucket ENUM('LOW','MEDIUM','HIGH'),
+--     revenue FLOAT,
+--     expected_revenue_loss FLOAT,
+--     priority_score FLOAT,
+--     model_version VARCHAR(20),
+--     batch_run_date DATE
+-- );
+
+TRUNCATE TABLE customers_predictions;
