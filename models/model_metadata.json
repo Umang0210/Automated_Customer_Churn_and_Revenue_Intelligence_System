@@ -1,12 +1,12 @@
 {
     "model_version": "v1.1.0",
-    "training_date": "2026-02-06 19:34:24",
+    "training_date": "2026-02-11 17:54:22",
     "selected_model": "random_forest",
     "baseline_model": "logistic_regression",
     "metrics": {
         "logistic_regression": {
             "roc_auc": 0.8282,
-            "precision": 0.4902,
+            "precision": 0.491,
             "recall": 0.8021
         },
         "random_forest": {
