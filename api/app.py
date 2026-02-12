@@ -245,7 +245,6 @@ def dashboard_summary():
     conn.close()
     return data
 
-
 @app.get("/api/dashboard/priority_customers")
 def priority_customers():
     conn = get_db_connection()

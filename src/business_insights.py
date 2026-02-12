@@ -68,3 +68,4 @@ print(df.sort_values("priority_score", ascending=False)
       [["customerid", "churn_probability", "expected_revenue_loss"]]
       .head(5)
       .to_string(index=False))
+      

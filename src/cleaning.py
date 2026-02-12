@@ -5,7 +5,6 @@ import pandas as pd
 PROCESSED_DATA_DIR = "data/processed"
 CLEAN_DATA_PATH = os.path.join(PROCESSED_DATA_DIR, "clean_customers.csv")
 
-
 def get_latest_raw_snapshot():
     files = glob.glob(os.path.join(PROCESSED_DATA_DIR, "raw_snapshot_*.csv"))
     if not files:
