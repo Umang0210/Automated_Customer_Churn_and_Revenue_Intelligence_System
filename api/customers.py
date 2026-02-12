@@ -22,3 +22,4 @@ def get_customers():
     cursor.close()
     conn.close()
     return data
+    
