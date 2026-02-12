@@ -13,13 +13,12 @@ from sklearn.metrics import (
 from sklearn.model_selection import train_test_split
 
 # ==============================
-# PATH CONFIGURATION
+# CONFIG
 # ==============================
 BASE_DIR = Path(__file__).resolve().parent.parent
 MODEL_DIR = BASE_DIR / "models"
-DATA_DIR = BASE_DIR / "data" / "processed"
+DATA_PATH = BASE_DIR / "data" / "processed" / "customer_features.csv"
 
-DATA_PATH = DATA_DIR / "customer_features.csv"
 MODEL_PATH = MODEL_DIR / "churn_model.pkl"
 SCALER_PATH = MODEL_DIR / "scaler.pkl"
 FEATURE_LIST_PATH = MODEL_DIR / "feature_list.json"
@@ -28,15 +27,12 @@ TARGET_COL = "churn"
 RANDOM_STATE = 42
 
 
-# ==============================
-# MAIN EVALUATION
-# ==============================
 def evaluate_model():
 
     print("Loading data...")
     df = pd.read_csv(DATA_PATH)
 
-    # Normalize column names
+    # Normalize schema
     df.columns = (
         df.columns
         .str.strip()
@@ -48,11 +44,15 @@ def evaluate_model():
     if df[TARGET_COL].dtype == object:
         df[TARGET_COL] = df[TARGET_COL].map({'yes': 1, 'no': 0})
 
-    X = df.drop(columns=[TARGET_COL], errors="ignore")
+    # Explicit feature selection (match training)
+    NUMERIC_COLS = ["tenure", "monthlycharges", "totalcharges"]
+    CATEGORICAL_COLS = ["gender", "seniorcitizen", "contract"]
+
+    X = df[NUMERIC_COLS + CATEGORICAL_COLS]
     y = df[TARGET_COL]
 
     # Encode categoricals
-    X = pd.get_dummies(X, drop_first=True)
+    X = pd.get_dummies(X, columns=CATEGORICAL_COLS, drop_first=True)
 
     # Align features to training schema
     with open(FEATURE_LIST_PATH, "r") as f:
@@ -60,7 +60,7 @@ def evaluate_model():
 
     X = X.reindex(columns=feature_list, fill_value=0)
 
-    # Train/test split (same as training)
+    # Train/test split
     X_train, X_test, y_train, y_test = train_test_split(
         X,
         y,
@@ -78,7 +78,7 @@ def evaluate_model():
         scaler = joblib.load(SCALER_PATH)
         X_test = scaler.transform(X_test)
     else:
-        print("No scaler found. Using raw features (tree-based model).")
+        print("No scaler found. Using raw features.")
 
     print("Running predictions...")
     y_proba = model.predict_proba(X_test)[:, 1]
@@ -126,8 +126,5 @@ def evaluate_model():
         print("\n✅ Model performance acceptable.")
 
 
-# ==============================
-# ENTRY POINT
-# ==============================
 if __name__ == "__main__":
     evaluate_model()
