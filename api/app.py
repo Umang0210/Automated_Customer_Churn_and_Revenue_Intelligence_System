@@ -141,13 +141,15 @@ def insert_prediction(record: dict):
 class ChurnRequest(BaseModel):
     customer_id: str
     revenue: float = Field(gt=0)
-    monthly_charges: float = Field(gt=0)
-    usage_frequency: int = Field(ge=0)
-    complaints_count: int = Field(ge=0)
-    payment_delays: int = Field(ge=0)
-    gender: str = "missing"
-    seniorcitizen: str = "missing"
-    contract: str = "missing"
+
+    # MUST match training features exactly
+    tenure: float = Field(ge=0)
+    monthlycharges: float = Field(gt=0)
+    totalcharges: float = Field(ge=0)
+
+    gender: str
+    seniorcitizen: str
+    contract: str
 
 # ===============================
 # Health
