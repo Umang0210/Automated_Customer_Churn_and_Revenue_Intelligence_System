@@ -57,16 +57,16 @@ jobs:
       - name: Run Container & Health Check
         run: |
           echo "Starting container..."
-          docker run -d -p 8000:8000 --name churn-test churn-api:latest
+          docker run -d -p 8000:8000 --name churn-test churn-api:latest || true
 
           echo "Waiting for API to boot..."
           sleep 12
 
+          echo "========== CONTAINER STATUS =========="
+          docker ps -a || true
+
           echo "========== CONTAINER LOGS =========="
-          docker logs churn-test
-
-          echo "========== RUNNING CONTAINERS =========="
-          docker ps -a
-
+          docker logs churn-test || true
+            
           echo "========== HEALTH CHECK =========="
           curl --fail http://localhost:8000/health
