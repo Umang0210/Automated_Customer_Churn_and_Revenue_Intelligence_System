@@ -15,11 +15,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-<<<<<<< HEAD
-      # 2️⃣ Set up Python 3.11 (required for sklearn 1.8.0)
-=======
       # 2️⃣ Set up Python 3.10 (stable + compatible with sklearn 1.3.2)
->>>>>>> 4771c73213ae3f16396de3320af4a309be788efa
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -48,11 +44,7 @@ jobs:
         run: |
           docker build -t churn-ml-api .
 
-<<<<<<< HEAD
-      # 7️⃣ Run container & test health
-=======
       # 7️⃣ Run container & test health endpoint
->>>>>>> 4771c73213ae3f16396de3320af4a309be788efa
       - name: Run container & test health
         run: |
           docker run -d -p 8000:8000 --name churn-api-test churn-ml-api
