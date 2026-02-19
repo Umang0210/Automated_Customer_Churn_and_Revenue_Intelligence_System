@@ -253,4 +253,3 @@ def get_risk_distribution():
 @app.get("/")
 def read_root():
     return {"message": "Welcome to Churn Insights API. Go to /static/index.html for the dashboard."}
-    
