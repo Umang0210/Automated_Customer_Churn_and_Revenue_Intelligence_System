@@ -15,7 +15,6 @@ MODEL_PATH = "models/churn_model.pkl"
 FEATURES_PATH = "models/feature_list.json"
 METADATA_PATH = "models/model_metadata.json"
 
-
 # =====================================================
 # DATABASE CONNECTION
 # =====================================================
