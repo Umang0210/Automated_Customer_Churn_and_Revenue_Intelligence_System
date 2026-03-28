@@ -143,10 +143,18 @@ Customer_Churn_and_Revenue_Intelligence_System/
 ├── .gitignore
 ├── ARCHITECTURE.md
 ├── Dockerfile
+├── Dockerfile.webapp
+├── Jenkinsfile                  # Jenkins CI/CD pipeline
 ├── amplify.yml
 ├── docker-compose.yml
 ├── main.sql                     # MySQL schema
 ├── requirements.txt
+│
+├── aws/                         # AWS deployment configs
+│   ├── ecr-setup.sh            # One-time ECR repo creation
+│   ├── ecs-task-definition.json # Fargate task definition
+│   └── ecs-service.sh          # One-time ECS cluster + service setup
+│
 └── README.md                    # This file
 ```
 
@@ -319,9 +327,80 @@ See `reports/README.md` for full documentation of all outputs.
 | Docker containerisation | ✅ |
 | Docker Compose (MySQL + API) | ✅ |
 | CI/CD GitHub Actions | ✅ |
+| CI/CD Jenkins Pipeline | ✅ |
 | Performance gate (AUC ≥ 0.70) | ✅ |
-| Kubernetes manifests | 🔜 Roadmap |
-| Auto-retraining trigger | 🔜 Roadmap |
+| AWS ECR (Docker image registry) | ✅ |
+| AWS ECS Fargate (cloud deployment) | ✅ |
+| Auto-retraining trigger (weekly cron) | ✅ |
+
+---
+
+## ☁️ Deployment (Jenkins + AWS)
+
+### End-to-End Flow
+
+```
+New data pushed to repo (or weekly cron fires)
+        │
+        ▼
+  Jenkins triggers pipeline
+        │
+        ▼
+  run_pipeline.py (ingest → clean → features → EDA → train → evaluate)
+        │
+        ▼
+  Metrics gate: ROC-AUC ≥ 0.70?
+     YES │          NO → Build fails, no deployment
+        ▼
+  Docker build (API + Webapp images)
+        │
+        ▼
+  Push to AWS ECR
+        │
+        ▼
+  Update AWS ECS Fargate → New containers go live
+```
+
+### Jenkins Pipeline (`Jenkinsfile`)
+
+7 automated stages:
+
+| Stage | What it does |
+|-------|-------------|
+| Checkout | Pull code from GitHub |
+| Install Dependencies | `pip install -r requirements.txt` |
+| Run ML Pipeline | `python run_pipeline.py` (full 8-step pipeline) |
+| Metrics Gate | Fail build if ROC-AUC < 0.70 |
+| Docker Build | Build API + Webapp images |
+| Push to ECR | Push images to AWS ECR |
+| Deploy to ECS | Update ECS service with new image |
+
+**Auto-retraining**: Jenkins cron runs every Sunday at 2 AM automatically.
+
+### AWS Setup (One-Time)
+
+```bash
+# 1. Create ECR repositories
+chmod +x aws/ecr-setup.sh
+./aws/ecr-setup.sh
+
+# 2. Create ECS cluster + service
+#    First, set your subnet/security group:
+export SUBNET_IDS="subnet-xxxxxxxx,subnet-yyyyyyyy"
+export SECURITY_GROUP="sg-xxxxxxxx"
+chmod +x aws/ecs-service.sh
+./aws/ecs-service.sh
+```
+
+### Jenkins Setup
+
+1. Install Jenkins with Docker + AWS CLI on the build server
+2. Install plugins: **Pipeline**, **Docker Pipeline**, **AWS Credentials**
+3. Add credentials in Jenkins > Manage Credentials:
+   - `AWS_ACCOUNT_ID` (Secret text)
+   - `AWS_DEFAULT_REGION` (Secret text)
+   - `aws-credentials` (AWS Credentials type)
+4. Create a Pipeline job pointing to the `Jenkinsfile` in the repo
 
 ---
 
